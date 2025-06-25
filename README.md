@@ -13,7 +13,7 @@ Soy Joy is an online platform for selling soy-based products. This Flask web app
 
 ## Getting Started
 1. Install dependencies: `pip install flask`
-2. (Optional for desktop GUI) `pip install PyQt5`
+2. desktop GUI: `pip install PyQt5`
 3. Run the app: `python app.py`
 4. Open your browser at `http://127.0.0.1:5000/`
 
