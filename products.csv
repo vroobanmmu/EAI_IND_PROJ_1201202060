@@ -1,0 +1,13 @@
+id,name,price,stock,image
+1,Soy Milk Pudding (Tofu Pudding),10,20,soy_pudding.jpg
+2,Soy Ice Cream (Soft Serve),10,18,soy_ice_cream.jpg
+3,Matcha Soy Cake,12,15,matcha_soy_cake.jpg
+4,Soy Chocolate Mousse,10,16,soy_choco_mousse.jpg
+5,Tofu Scrambles,12,14,tofu_scramble.jpg
+6,Soy Burger,15,12,soy_burger.jpg
+7,Vegetable Stir-Fry with Tofu,14,10,stirfry_tofu.jpg
+8,Soy Wrap with Mixed Vegetables,12,13,soy_wrap.jpg
+9,Soy Latte,10,25,soy_latte.jpg
+10,Smoothie with Soy Protein,12,20,soy_smoothie.jpg
+11,Soy Milk Tea (Various Flavors),8,22,soy_milk_tea.jpg
+12,Matcha Soy Milk,9,18,matcha_soy_milk.jpg

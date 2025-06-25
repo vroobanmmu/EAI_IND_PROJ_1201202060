@@ -1,0 +1,80 @@
+Soy Joy EAI System: Relevant Diagrams and Integration Overview
+
+1. Use Case Diagram (Textual Description)
+
+Actors:
+- Customer
+- Admin/Staff
+- System (Flask Backend, PyQt5 Desktop App, CSV Data Store)
+
+Use Cases:
+- Customer:
+  - Register/Login (register, login routes)
+  - Browse Menu (order route, load_products function)
+  - Place Order (add-to-cart, cart, checkout, save_order)
+  - Write Review (add_review, save_review)
+  - View Order History (user_profile, load_users, orders.csv)
+- Admin/Staff:
+  - Login (admin_login route, admin_login function in desktop)
+  - Manage Inventory (add/edit/delete product: admin/add-product, admin/edit-product/<product_id>, admin/delete-product/<product_id>, log_admin_activity)
+  - View Orders (admin/orders, api_admin_orders, show_orders)
+  - View User/Admin Activity (admin/user-activity, api_admin_user_activity, show_activity)
+  - Dashboard Analytics (admin-dashboard, api_admin_dashboard, show_dashboard)
+- System:
+  - Synchronize Data (CSV helpers, API endpoints)
+  - Log Activities (log_login, log_admin_activity)
+
+2. Data Flow Diagram (DFD) (Textual Description)
+
+Processes:
+- Web App (Flask)
+- Desktop App (PyQt5)
+- CSV Data Store
+
+Data Flows:
+- Customer places order (web):
+  - order, add-to-cart, checkout routes → save_order() → orders.csv
+  - orders.csv updates inventory (load_products, update stock)
+- Admin updates inventory (web/desktop):
+  - admin/add-product, admin/edit-product/<product_id>, admin/delete-product/<product_id> (web)
+  - api/admin/inventory/add, api/admin/inventory/edit/<product_id>, api/admin/inventory/delete/<product_id> (API for desktop)
+  - All changes update products.csv and log_admin_activity()
+- Desktop app fetches data:
+  - show_inventory() calls /api/admin/inventory → load_products() → products.csv
+  - show_orders() calls /api/admin/orders → orders.csv
+  - show_dashboard() calls /api/admin/dashboard → login_logs.csv
+- Reviews:
+  - add_review() → save_review() → reviews.csv
+- Activity Logging:
+  - log_login(), log_admin_activity() → login_logs.csv
+
+3. Class/Function Mapping for Diagrams
+
+Backend (Flask):
+- Functions: load_products, save_order, load_reviews, save_review, load_users, update_user_profile, log_login, log_admin_activity
+- Routes: '/', '/register', '/login', '/logout', '/order', '/cart', '/add-to-cart/<product_id>', '/admin-dashboard', '/admin/orders', '/admin/inventory', '/admin/user-activity', '/admin/add-product', '/admin/edit-product/<product_id>', '/admin/delete-product/<product_id>', '/api/admin/dashboard', '/api/admin/orders', '/api/admin/inventory', '/api/admin/user-activity', '/api/admin/inventory/add', '/api/admin/inventory/edit/<product_id>', '/api/admin/inventory/delete/<product_id>'
+
+Desktop App (PyQt5):
+- Class: SoyJoyDesktop
+- Methods: admin_login, show_dashboard, show_orders, show_inventory, show_activity, edit_inventory_item, logout_admin, show_notification
+
+4. Sequence Diagram (Textual Example: Admin Edits Product)
+- Admin logs in (admin_login in desktop → /admin/login route)
+- Admin opens Inventory (show_inventory → /api/admin/inventory)
+- Admin edits a product (edit_inventory_item → /api/admin/inventory/edit/<product_id>)
+- Flask backend updates products.csv, logs action with log_admin_activity
+- Inventory table refreshes in desktop app (show_inventory)
+- Admin activity appears in dashboard (show_dashboard → /api/admin/dashboard)
+
+5. Integration Points
+- All inventory, order, and activity data is stored in CSV files and accessed by both web and desktop apps
+- Desktop app uses HTTP API endpoints for all admin functions, ensuring real-time sync
+- Logging functions ensure traceability and auditability across all actions
+
+6. Diagram Suggestions for Documentation
+- Use Case Diagram: Show actors (Customer, Admin, System) and their interactions with system functions/routes
+- Data Flow Diagram: Show how data moves between web app, desktop app, and CSV files via functions/routes
+- Sequence Diagram: Illustrate step-by-step process for key actions (e.g., order placement, inventory update)
+- Component Diagram: Show system components (Flask backend, PyQt5 desktop, CSV data store) and their relationships
+
+This file provides a detailed mapping of diagrams to actual functions, classes, and routes in the Soy Joy codebase, making it easy to create visual documentation that accurately reflects the system's integration and operation.

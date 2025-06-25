@@ -1,0 +1,124 @@
+1. Introduction to Soy Joy's EAI
+
+1.1 Company Overview
+Business Model: Soy Joy is a boutique cafe located in the city center, specializing in a diverse range of soy-based desserts, drinks, and savory dishes. The cafe targets health-conscious customers, vegans, and those seeking innovative plant-based alternatives. Soy Joy operates both a physical storefront and an online platform for ordering and delivery.
+Mission: To provide healthy, delicious, and innovative soy-based food and beverages that promote wellness and sustainability.
+Vision: To be recognized as a leader in the soy-based food industry, inspiring communities to embrace plant-based living through quality, taste, and creativity.
+
+1.2 Current Applications
+Soy Joy leverages several integrated software solutions to streamline its business operations:
+- Inventory Management System: Tracks product stock, updates inventory in real time after each sale, and allows admins to add, edit, or remove products. Accessible via both web and desktop interfaces.
+- E-commerce Platform: A Flask-based web application where customers can browse the menu, register, log in, place orders, and leave reviews. The platform supports user profiles, order history, and a shopping cart.
+- Admin Dashboard: A web-based dashboard for staff and management to monitor orders, inventory, and user/admin activity logs. Provides analytics and reporting features.
+- Desktop Admin App: A PyQt5-based GUI for admin users, enabling inventory management, order review, and activity log access. Fully synchronized with the web backend.
+- Logging and Analytics: All user and admin actions (logins, inventory changes, order processing) are logged in CSV files for traceability and reporting.
+
+2. Planning for EAI
+
+2.1 EAI Strategy
+The EAI (Enterprise Application Integration) strategy at Soy Joy is to unify all business-critical applications, ensuring seamless data flow and operational efficiency. The integration aims to:
+- Improve data visibility and accuracy across all platforms (web, desktop, admin)
+- Eliminate data silos and manual reconciliation
+- Enable real-time updates to inventory, orders, and user activity
+- Support business growth by making the system scalable and maintainable
+
+2.2 Data Integration Needs
+Key data entities and integration requirements include:
+- Product Data: ID, name, description, price, stock, category, image (shared between inventory, web, and desktop apps)
+- Order Data: Order ID, user, product(s), quantity, price, timestamp (flows from e-commerce to inventory and analytics)
+- User Data: User/admin profiles, credentials, activity logs (used for authentication, personalization, and reporting)
+- Reviews: Product reviews linked to user and product IDs (displayed on product pages)
+- Activity Logs: All admin/user actions (login, inventory changes, order management) for audit and analytics
+
+2.3 EAI Diagrams
+2.3.1 Use Case Diagram:
+Stakeholders:
+- Customers: Register, log in, browse menu, place orders, write reviews
+- Staff/Admin: Log in, manage inventory, process orders, view logs, generate reports
+- Management: Access analytics, monitor business KPIs, oversee staff activity
+Interactions:
+- Customers interact with the e-commerce platform for ordering and reviews
+- Staff/Admin interact with both web dashboard and desktop app for inventory and order management
+- Management uses dashboards for analytics and reporting
+
+2.3.2 Data Flow Diagram (DFD):
+- Customer places order (web) → Order data updates inventory and logs
+- Admin updates inventory (web/desktop) → Inventory data syncs across all platforms
+- Sales data (POS/e-commerce) → Updates inventory, logs, and analytics
+- User/admin logins → Activity logs for security and reporting
+- Reviews submitted → Linked to products and users, displayed on web
+
+3. Development and Technologies for EAI
+
+3.1 Overview of Technology Stack
+- Backend: Python (Flask) for RESTful APIs, business logic, and data integration
+- Frontend: HTML/CSS/JavaScript for web UI, Jinja2 for templating
+- Desktop: PyQt5 for a modern, responsive admin GUI (not Tkinter)
+- Data Storage: CSV files for products, users, orders, reviews, and logs (simple, portable, and easy to integrate)
+- Integration: All systems communicate via HTTP APIs and shared CSV files, ensuring real-time synchronization
+
+3.2 Web-Based System Development
+3.2.1 Web Application Features
+- Menu display with product images, descriptions, and prices
+- User registration, login, and profile management
+- Shopping cart and order placement
+- Product reviews and ratings
+- Admin dashboard for inventory, orders, and activity logs
+- Responsive, modern UI/UX with clear navigation
+
+3.3 Desktop Application Features
+- Admin login with secure authentication
+- Inventory management: add, edit, delete products (fully synced with web)
+- Order management: view all orders, order details
+- Activity log: view all admin/user actions
+- Real-time updates and notifications
+- Modern, user-friendly interface with large buttons and clear layouts
+
+4. Security and Data Integrity
+- User/admin authentication for all sensitive actions
+- Session management for web and desktop apps
+- Input validation and error handling throughout the system
+- Activity logging for traceability and audit
+
+5. Scalability and Future Enhancements
+- The current CSV-based system can be upgraded to a relational database (e.g., SQLite, PostgreSQL) for larger scale
+- APIs can be extended for mobile app integration
+- Analytics and reporting features can be enhanced with data visualization tools
+- Role-based access control for more granular permissions
+
+6. Key Functions and Code Structure
+
+6.1 Backend (Flask) Functions
+- load_products(): Loads product data from products.csv for use in inventory, order, and product display features.
+- save_order(): Appends new order data to orders.csv when a customer places an order.
+- load_reviews(), save_review(): Manage product reviews, allowing users to submit and view feedback.
+- load_users(), update_user_profile(): Handle user registration, login, and profile updates.
+- log_login(), log_admin_activity(): Record all user and admin logins and admin actions (add/edit/delete products, order management) to login_logs.csv for traceability.
+- Flask routes:
+  - '/' (landing page), '/register', '/login', '/logout': User authentication and navigation.
+  - '/order', '/cart', '/add-to-cart/<product_id>': Customer ordering and cart management.
+  - '/admin-dashboard', '/admin/orders', '/admin/inventory', '/admin/user-activity': Admin dashboard and management panels (web).
+  - '/api/admin/dashboard', '/api/admin/orders', '/api/admin/inventory', '/api/admin/user-activity': JSON API endpoints for desktop app integration.
+  - '/admin/add-product', '/admin/edit-product/<product_id>', '/admin/delete-product/<product_id>': Inventory management (add, edit, delete products).
+
+6.2 Desktop Application (PyQt5) Functions
+- admin_login(): Handles admin authentication, session management, and UI state changes.
+- show_dashboard(), show_orders(), show_inventory(), show_activity(): Load and display respective admin panels by calling the Flask API endpoints and rendering data in PyQt5 widgets.
+- edit_inventory_item(): Allows inline editing of inventory data in the desktop app, sending updates to the Flask backend via API.
+- logout_admin(): Resets the UI to the login state and clears the session.
+- show_notification(): Displays system tray notifications for key events (login, updates).
+
+6.3 Data Flow and Synchronization
+- All product, order, and activity data is stored in CSV files and accessed by both the web and desktop apps.
+- The desktop app communicates with the Flask backend via HTTP API endpoints, ensuring real-time synchronization of inventory and admin actions.
+- Admin actions (add/edit/delete products) are logged and reflected immediately in both the web and desktop interfaces.
+
+6.4 Error Handling and Validation
+- Backend: All routes validate user/admin sessions, input data, and handle missing or malformed requests with appropriate error messages.
+- Desktop: User feedback is provided via message boxes for login errors, failed updates, and successful actions.
+
+6.5 Extensibility
+- The codebase is modular, with clear separation between data access (CSV helpers), business logic (Flask routes), and presentation (HTML templates, PyQt5 widgets).
+- New features (e.g., reporting, analytics, mobile integration) can be added by extending the API and UI components.
+
+This detailed EAI overview reflects the actual codebase and architecture of Soy Joy's integrated platform, supporting both web and desktop operations.
